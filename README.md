@@ -2,7 +2,7 @@
 
 该项目是基于SSM实现的客户关系管理系统，在动力节点[crm项目](https://www.bilibili.com/video/BV1tZ4y1d7kg)基础上优化改进<br/>使用thymeleaf代替jsp，并且加入了vue，适合初学SSM的同学学习。
 
-## 技术栈
+## 1️⃣技术栈
 
 Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
@@ -14,11 +14,11 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
 页面：Bootstrap_3.3.0
 
-## 已实现的功能
+## 2️⃣已实现的功能
 
  **:star: 账号登录**
 
-## 日志
+## 3️⃣日志
 
 ### 2022/4/2 - 实现基本的登录功能:
 
@@ -37,3 +37,8 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
     3. 由于使用thymeleaf暂时没找到操作cookie的方法，故此导入vue-cookie包，使用vue操作cookie
     
     4. 在vue中，不能用$cookies.get('loginAct') && $cookies.get('loginPwd')为checked赋值，此时值为$cookies.get('loginPwd')。应该用!!($cookies.get('loginAct') && $cookies.get('loginPwd'))，此时值为一个布尔类型。
+
+## 4️⃣遗留的问题
+
+### 1. 页面问题（下拉列表超出页面）：
+![页面问题](https://user-images.githubusercontent.com/46675231/161415327-47f2f84e-1408-4338-b170-d39c5b987195.png)
