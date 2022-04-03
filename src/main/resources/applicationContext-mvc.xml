@@ -56,5 +56,20 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--首页控制器-->
     <mvc:view-controller path="/" view-name="index"/>
+
+    <!--    配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--表示对那些资源进行拦截操作-->
+            <!--/**表示对所有的资源都进行拦截操作-->
+            <mvc:mapping path="/settings/**"/>
+            <mvc:mapping path="/workbench/**"/>
+            <!--排除在拦截器外的请求-->
+            <mvc:exclude-mapping path="/settings/qx/user/toLogin.do"/>
+            <mvc:exclude-mapping path="/settings/qx/user/login.do"/>
+            <bean class="com.fj.crm.settings.web.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

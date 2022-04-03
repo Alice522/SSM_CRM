@@ -1913,7 +1913,7 @@ module.exports = {
 
 /***/ "./lib/utils.js":
 /*!**********************!*\
-  !*** ./lib/utils.js ***!
+  !*** ./lib/vue-cookie.js ***!
   \**********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {

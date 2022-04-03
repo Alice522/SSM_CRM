@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <title>用户界面</title>
     <link th:href="@{/jquery/bootstrap_3.3.0/css/bootstrap.min.css}" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/jquery/jquery-1.11.1-min.js}"></script>
     <script type="text/javascript" th:src="@{/jquery/bootstrap_3.3.0/js/bootstrap.min.js}"></script>
@@ -34,7 +35,7 @@
             });
 
 
-            window.open("main/index.html", "workareaFrame");
+/*            window.open("main/index.html", "workareaFrame");*/
 
         });
 
@@ -55,12 +56,12 @@
             </div>
             <div class="modal-body">
                 <div style="position: relative; left: 40px;">
-                    姓名：<b>张三</b><br><br>
-                    登录帐号：<b>zhangsan</b><br><br>
-                    组织机构：<b>1005，市场部，二级部门</b><br><br>
-                    邮箱：<b>zhangsan@bjpowernode.com</b><br><br>
-                    失效时间：<b>2017-02-14 10:10:10</b><br><br>
-                    允许访问IP：<b>127.0.0.1,192.168.100.2</b>
+                    姓名：<b th:text="${session.user.name}"></b><br><br>
+                    登录帐号：<b th:text="${session.user.loginAct}"></b><br><br>
+                    组织机构：<b th:text="${session.user.deptno}"></b><br><br>
+                    邮箱：<b th:text="${session.user.email}"></b><br><br>
+                    失效时间：<b th:text="${session.user.expireTime}"></b><br><br>
+                    允许访问IP：<b th:text="${session.user.allowIps}"></b>
                 </div>
             </div>
             <div class="modal-footer">
@@ -130,7 +131,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal"
-                        onclick="window.location.href='../login.html';">确定
+                        @click="exit">确定
                 </button>
             </div>
         </div>
@@ -146,7 +147,7 @@
             <li class="dropdown user-dropdown">
                 <a href="javascript:void(0)" style="text-decoration: none; color: white;" class="dropdown-toggle"
                    data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user"></span> zhangsan <span class="caret"></span>
+                    <span class="glyphicon glyphicon-user"></span><span th:text="${session.user.name}"></span><span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="../settings/index.html"><span class="glyphicon glyphicon-wrench"></span> 系统设置</a></li>
@@ -235,5 +236,16 @@
 <!-- 底部 -->
 <div id="down" style="height: 30px; width: 100%; position: absolute;bottom: 0px;"></div>
 
+<script type="text/javascript">
+    var vue = new Vue({
+        el:"#exitModal",
+        methods:{
+            //执行安全退出
+            exit:function () {
+                window.location.href="/CRM/settings/qx/user/logout.do";
+            }
+        }
+    })
+</script>
 </body>
 </html>

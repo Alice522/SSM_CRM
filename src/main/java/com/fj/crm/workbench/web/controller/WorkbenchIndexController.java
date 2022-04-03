@@ -11,4 +11,5 @@ public class WorkbenchIndexController {
         //跳转到业务主页面
         return "workbench/index";
     }
+
 }
