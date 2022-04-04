@@ -56,7 +56,8 @@
     <!--4 自动扫描对象关系映射 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!-- 指定要自动扫描接口的基础包，实现接口 -->
-        <property name="basePackage" value="com.fj.crm.settings.mapper"/>
+        <property name="basePackage" value="com.fj.crm.settings.mapper,
+                                            com.fj.crm.workbench.mapper"/>
     </bean>
 
     <!--5 对mybatis操作数据事务控制，spring使用jdbc的事务控制类 -->

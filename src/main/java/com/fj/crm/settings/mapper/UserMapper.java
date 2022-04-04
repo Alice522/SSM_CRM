@@ -2,6 +2,7 @@ package com.fj.crm.settings.mapper;
 
 import com.fj.crm.settings.domain.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserMapper {
@@ -57,4 +58,9 @@ public interface UserMapper {
     * 根据登录信息用户名和密码，查询用户信息
     * */
     User queryByUserActAndPwd(Map<String,Object> map);
+
+    /*
+    * 查询所有用户的信息，并返回一个List
+    * */
+    List<User> queryAllUser();
 }

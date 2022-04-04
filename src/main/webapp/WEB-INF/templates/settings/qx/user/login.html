@@ -52,7 +52,7 @@
     import VueCookies from "http://localhost:8080/CRM/js/vue-cookie.js";
     Vue.use(VueCookies)
 
-    var vue = new Vue({
+    let vue = new Vue({
         el: "#login-form",
         // vue中使用
         // 只需要将下方注释的触发事件处的事件改为你想使用enter触发事件的函数名即可
@@ -108,7 +108,7 @@
                     dataType: 'json',
                     data: formData
                 }).then((res) => {
-                    if (res.data.code == "1") {
+                    if (res.data.code === "1") {
                         this.message = "";
                         window.location.href = "/CRM/workbench/index.do";
                     } else {
