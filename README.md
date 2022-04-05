@@ -43,7 +43,9 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
     1. 输入日期的input标签中应该加上autocomplete="off"，否则历史记录的下拉列表会覆盖日历
 
     2. vue无法在实现了bootstrap日历功能的input标签上使用v-model进行双向绑定，会出现值消失的情况。建议ref选择标签用value直接获取日期值
-    
+
+    3. bootstrap日历插件汉化包不能正常加载，出现乱码，解决办法：将汉化包中的代码复制到Script标签下
+
 ## 4️⃣遗留的问题
 
 ### 1. 页面问题（下拉列表超出页面）：
