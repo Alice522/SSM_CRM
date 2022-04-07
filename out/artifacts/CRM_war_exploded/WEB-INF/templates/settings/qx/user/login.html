@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>登录界面</title>
+    <link th:href="@{/jquery/bootstrap_3.3.0/css/bootstrap.min.css}" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/jquery/jquery-1.11.1-min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery/bootstrap_3.3.0/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/vue.js}"></script>
+    <script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
+
+</head>
+<body v-on:keyup.enter="submitForm">
+<div style="position: absolute; top: 0px; left: 0px; width: 60%;">
+    <img th:src="@{/image/IMG_7114.JPG}" style="width: 100%; height: 90%; position: relative; top: 50px;">
+</div>
+<div id="top" style="height: 50px; background-color: #3C3C3C; width: 100%;">
+    <div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">
+        CRM &nbsp;<span style="font-size: 12px;">&copy;2022&nbsp;x分景x</span></div>
+</div>
+
+<div style="position: absolute; top: 120px; right: 100px;width:450px;height:400px;border:1px solid #D5D5D5">
+    <div style="position: absolute; top: 0px; right: 60px;">
+        <div class="page-header">
+            <h1>登录</h1>
+        </div>
+        <form id="login-form" action="" class="form-horizontal" role="form">
+            <div class="form-group form-group-lg">
+                <div style="width: 350px;">
+                    <input class="form-control" type="text" placeholder="请输入用户名" v-model.trim="formMess.act"/>
+                </div>
+                <div style="width: 350px; position: relative;top: 20px;">
+                    <input class="form-control" type="password" placeholder="请输入密码" v-model.trim="formMess.pwd"/>
+                </div>
+                <div class="checkbox" style="position: relative;top: 30px; left: 10px;">
+                    <label>
+                        <input type="checkbox" v-model="formMess.checked"> 十天内免登录
+                    </label>
+                    &nbsp;&nbsp;
+                    <span v-html="message" style="color: red;"></span>
+                </div>
+                <button type="button" @click="submitForm" class="btn btn-primary btn-lg btn-block"
+                        style="width: 350px; position: relative;top: 45px;">登录
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="module">
+
+    //导入cookie组件
+    import VueCookies from "http://localhost:8080/CRM/js/vue-cookie.js";
+    Vue.use(VueCookies)
+
+    let vue = new Vue({
+        el: "#login-form",
+        // vue中使用
+        // 只需要将下方注释的触发事件处的事件改为你想使用enter触发事件的函数名即可
+        created() {
+            var _this = this;
+            document.onkeydown = function (e) {
+                var key = e.keyCode;
+                if (key === 13) {
+                    _this.submitForm() // 触发事件
+                }
+            };
+
+        },
+        data() {
+            return {
+                message: "",
+
+                formMess: {
+                    //若存在cookie，则填入input标签，否则为null值
+                    "act": $cookies.get('loginAct'),
+                    "pwd": $cookies.get('loginPwd'),
+                    "checked": !!($cookies.get('loginAct') && $cookies.get('loginPwd'))
+                }
+            };
+        },
+        methods: {
+            submitForm: function () {
+                //验证用户输入是否为空
+                if (this.formMess.act == null) {
+                    alert("用户名不能为空");
+                    return;
+                }
+                if (this.formMess.pwd == null) {
+                    alert("密码不能为空");
+                    return;
+                }
+                //生成Json对象
+                let formData = JSON.stringify(this.formMess);
+
+                // 添加请求拦截器
+                axios.interceptors.request.use((config) => {
+                    // 在发送请求之前做些什么
+                    this.message = "正在努力验证....";
+                    return config;
+                });
+                //发送axios
+                axios({
+                    method: "post",
+                    url: "login.do",
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    },
+                    dataType: 'json',
+                    data: formData
+                }).then((res) => {
+                    if (res.data.code === "1") {
+                        this.message = "";
+                        window.location.href = "/CRM/workbench/index.do";
+                    } else {
+                        this.message = res.data.message;
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

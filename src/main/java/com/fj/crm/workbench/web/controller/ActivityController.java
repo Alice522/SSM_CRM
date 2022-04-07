@@ -8,6 +8,7 @@ import com.fj.crm.settings.domain.User;
 import com.fj.crm.settings.service.impl.UserServiceImpl;
 import com.fj.crm.workbench.domain.MarketingActivities;
 import com.fj.crm.workbench.service.impl.ActivityServiceImpl;
+import com.google.protobuf.MapEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ActivityController {
@@ -71,5 +74,20 @@ public class ActivityController {
             returnObject.setMessage("系统繁忙，稍后再试...");
         }
     return returnObject;
+    }
+
+    /*
+    * 根据条件查询并返回市场活动
+    * */
+    @RequestMapping("/workbench/activity/queryActivitiesByConditionByPage.do")
+    @ResponseBody
+    public Object queryActivitiesByConditionByPage(@RequestBody Map<String,Object> map){
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("activitiesList",activityService.queryActivitiesByConditionForPage(map));
+        returnMap.put("activitiesTotal",activityService.queryTotalActivitiesByConditionForPage(map));
+        for(Map.Entry<String, Object> entry:returnMap.entrySet()){
+            System.out.println(entry);
+        }
+        return returnMap;
     }
 }
