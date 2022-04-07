@@ -46,7 +46,7 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
     3. bootstrap日历插件汉化包不能正常加载，出现乱码，解决办法：将汉化包中的代码复制到Script标签下
     
-### 2022/4/7 - 市场活动的分页查询与展示:
+### 2022/4/7 - 市场活动的分页查询与展示，条件查询:
 
 
     1. 项目视频上有错误，查询市场活动的sql语句中的limit后面应该用${beginNo},${pageSize},而不是#{}.此外limit的起始索引应该为0，而不是1
