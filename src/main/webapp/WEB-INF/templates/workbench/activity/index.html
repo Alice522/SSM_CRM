@@ -6,15 +6,64 @@
     <link th:href="@{/jquery/bootstrap_3.3.0/css/bootstrap.min.css}" type="text/css" rel="stylesheet"/>
     <link th:href="@{/jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css}" type="text/css"
           rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/jquery/bs_pagination-master/css/jquery.bs_pagination.min.css}">
 
     <script type="text/javascript" th:src="@{/jquery/jquery-1.11.1-min.js}"></script>
     <script type="text/javascript" th:src="@{/jquery/bootstrap_3.3.0/js/bootstrap.min.js}"></script>
     <script type="text/javascript"
             th:src="@{/jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js}"></script>
-    <script type="text/javascript"
-            th:src="@{/jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery/bs_pagination-master/js/jquery.bs_pagination.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/vue.js}"></script>
     <script type="text/javascript" th:src="@{/js/axios.min.js}"></script>
+
+    <script type="text/javascript">
+        //日历汉化
+        $.fn.datetimepicker.dates['zh-CN'] = {
+            days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+            daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+            daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "11月", "12月"],
+            today: "今天",
+            suffix: [],
+            meridiem: ["上午", "下午"]
+        };
+
+        //翻页插件汉化
+        var rsc_bs_pag = {
+            go_to_page_title: '跳转到',
+            rows_per_page_title: '每页显示',
+            current_page_label: '页',
+            current_page_abbr_label: 'p.',
+            total_pages_label: 'of',
+            total_pages_abbr_label: '/',
+            total_rows_label: 'of',
+            rows_info_records: '记录',
+            go_top_text: '首页',
+            go_prev_text: '上一页',
+            go_next_text: '下一页',
+            go_last_text: '尾页'
+        };
+
+        //设置日历参数
+        $(function () {
+            $(".myDate").datetimepicker({
+                language: 'zh-CN',
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                autoclose: true,
+                initialDate: new Date(),
+                clearBtn: true
+            });
+        });
+        $(function () {
+            //给"查询"按钮添加单击事件
+            $("#queryActivityBtn").click(function () {
+                //查询所有符合条件数据的第一页以及所有符合条件数据的总条数;
+                mainPage.queryActivities(true, 1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+            });
+        })
+    </script>
 </head>
 <body>
 
@@ -228,11 +277,11 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">结束日期</div>
-                        <input class="form-control myDate" type="text" id="endTime"  ref="conditionEndDate" readonly/>
+                        <input class="form-control myDate" type="text" id="endTime" ref="conditionEndDate" readonly/>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-default" @click="queryActivities(true)">查询</button>
+                <button type="button" class="btn btn-default" id="queryActivityBtn">查询</button>
 
             </form>
         </div>
@@ -281,70 +330,12 @@
                 </tr>
                 </tbody>
             </table>
+            <div id="demo_pag1"></div>
         </div>
-
-        <div style="height: 50px; position: relative;top: 30px;">
-            <div id="totalComponent">
-                <button type="button" class="btn btn-default" style="cursor: default;">共<b v-html="totalActivities"></b>条记录
-                </button>
-            </div>
-            <div class="btn-group" style="position: relative;top: -34px; left: 110px;">
-                <button type="button" class="btn btn-default" style="cursor: default;">显示</button>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        10
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">20</a></li>
-                        <li><a href="#">30</a></li>
-                    </ul>
-                </div>
-                <button type="button" class="btn btn-default" style="cursor: default;">条/页</button>
-            </div>
-            <div style="position: relative;top: -88px; left: 285px;">
-                <nav>
-                    <ul class="pagination">
-                        <li class="disabled"><a href="#">首页</a></li>
-                        <li class="disabled"><a href="#">上一页</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">下一页</a></li>
-                        <li class="disabled"><a href="#">末页</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
     </div>
 
 </div>
 <script type="text/javascript">
-    //日历汉化
-    $.fn.datetimepicker.dates['zh-CN'] = {
-        days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-        daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-        daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
-        months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-        monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "11月", "12月"],
-        today: "今天",
-        suffix: [],
-        meridiem: ["上午", "下午"]
-    };
-    //设置日历参数
-    $(function () {
-        $(".myDate").datetimepicker({
-            language: 'zh-CN',
-            format: 'yyyy-mm-dd',
-            minView: 'month',
-            autoclose: true,
-            initialDate: new Date(),
-            clearBtn: true
-        });
-    });
 
     let createActivityModal = new Vue({
         el: "#createActivityModal",
@@ -407,6 +398,8 @@
                     if (res.data.code === '1') {
                         //模态窗口关闭
                         this.$refs.save.click();
+                        //刷新市场活动列，保持每页显示条数不变
+                        mainPage.queryActivities(true, 1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
                         //清空上次填写的值
                         this.formData.owner = "";
                         this.formData.name = "";
@@ -431,22 +424,23 @@
                     owner: "",
                     startDate: "",
                     endDate: "",
-                    beginNo: 0,
-                    pageSize: 10
+                    pageNo: "",
+                    pageSize: ""
                 },
-                totalActivities: "",
                 activitiesList: []
             }
         },
         beforeMount() {
-            this.queryActivities(false);
+            this.queryActivities(false, 1, 10);
         },
         methods: {
-            queryActivities: function (c) {
-                if(c){
+            queryActivities: function (after, pageNo, pageSize) {
+                if (after) {
                     this.queryConditions.startDate = this.$refs.conditionStartDate.value;
                     this.queryConditions.endDate = this.$refs.conditionEndDate.value;
                 }
+                this.queryConditions.pageNo = pageNo;
+                this.queryConditions.pageSize = pageSize;
                 axios({
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -456,8 +450,33 @@
                     url: 'queryActivitiesByConditionByPage.do',
                     data: JSON.stringify(this.queryConditions)
                 }).then((res) => {
-                    this.totalActivities = res.data.activitiesTotal;
                     this.activitiesList = res.data.activitiesList;
+                    let activitiesTotal = res.data.activitiesTotal;
+
+                    let totalPages = activitiesTotal % pageSize === 0 ? activitiesTotal / pageSize : parseInt(activitiesTotal / pageSize) + 1
+                    //对容器调用bs_pagination工具函数，显示翻页信息
+                    $("#demo_pag1").bs_pagination({
+                        currentPage: pageNo,//当前页号,相当于pageNo
+
+                        rowsPerPage: pageSize,//每页显示条数,相当于pageSize
+                        totalRows: activitiesTotal,//总条数
+                        totalPages: totalPages,  //总页数,必填参数.
+
+                        visiblePageLinks: 5,//最多可以显示的卡片数
+
+                        showGoToPage: true,//是否显示"跳转到"部分,默认true--显示
+                        showRowsPerPage: true,//是否显示"每页显示条数"部分。默认true--显示
+                        showRowsInfo: true,//是否显示记录的信息，默认true--显示
+
+                        //用户每次切换页号，都自动触发本函数;
+                        //每次返回切换页号之后的pageNo和pageSize
+                        onChangePage: function (event, pageObj) { // returns page_num and rows_per_page after a link has clicked
+                            //js代码
+                            //alert(pageObj.currentPage);
+                            //alert(pageObj.rowsPerPage);
+                            mainPage.queryActivities(true, pageObj.currentPage, pageObj.rowsPerPage);
+                        }
+                    });
                 })
             }
         }

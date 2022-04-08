@@ -224,7 +224,6 @@
             </if>
         </where>
         ORDER BY a.create_time DESC
-        LIMIT ${beginNo},${pageSize}
     </select>
 
     <!--根据条件查询市场活动，返回总条数：selectTotalActivitiesByCondition-->

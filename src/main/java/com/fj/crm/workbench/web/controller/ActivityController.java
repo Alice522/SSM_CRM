@@ -8,7 +8,7 @@ import com.fj.crm.settings.domain.User;
 import com.fj.crm.settings.service.impl.UserServiceImpl;
 import com.fj.crm.workbench.domain.MarketingActivities;
 import com.fj.crm.workbench.service.impl.ActivityServiceImpl;
-import com.google.protobuf.MapEntry;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,6 +83,7 @@ public class ActivityController {
     @ResponseBody
     public Object queryActivitiesByConditionByPage(@RequestBody Map<String,Object> map){
         Map<String,Object> returnMap = new HashMap<>();
+        PageHelper.startPage((int) map.get("pageNo"), (int) map.get("pageSize"));
         returnMap.put("activitiesList",activityService.queryActivitiesByConditionForPage(map));
         returnMap.put("activitiesTotal",activityService.queryTotalActivitiesByConditionForPage(map));
         for(Map.Entry<String, Object> entry:returnMap.entrySet()){
