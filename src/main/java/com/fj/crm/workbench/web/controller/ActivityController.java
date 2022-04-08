@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ActivityController {
@@ -83,12 +80,35 @@ public class ActivityController {
     @ResponseBody
     public Object queryActivitiesByConditionByPage(@RequestBody Map<String,Object> map){
         Map<String,Object> returnMap = new HashMap<>();
+        //启动分页查询插件
         PageHelper.startPage((int) map.get("pageNo"), (int) map.get("pageSize"));
+        //查询市场活动和总条数
         returnMap.put("activitiesList",activityService.queryActivitiesByConditionForPage(map));
         returnMap.put("activitiesTotal",activityService.queryTotalActivitiesByConditionForPage(map));
-        for(Map.Entry<String, Object> entry:returnMap.entrySet()){
-            System.out.println(entry);
-        }
         return returnMap;
+    }
+
+    /*
+     * 根据id删除指定市场活动
+     * */
+    @RequestMapping("/workbench/activity/deleteActivitiesByIDs.do")
+    @ResponseBody
+    public Object deleteActivitiesByIDs(@RequestBody Map<String,Object> map){
+        ReturnObject returnObject = new ReturnObject();
+        try {
+            Integer res = activityService.deleteActivitiesByIDs((List<String>) map.get("ids"));
+            if(res > 0){
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            }else {
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+                returnObject.setMessage("系统繁忙，稍后再试...");
+            }
+        }catch (Exception e){
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统繁忙，稍后再试...");
+            e.printStackTrace();
+
+        }
+        return returnObject;
     }
 }

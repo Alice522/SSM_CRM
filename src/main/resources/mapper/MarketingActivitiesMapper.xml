@@ -247,4 +247,12 @@
             </if>
         </where>
     </select>
+
+    <!--根据ID删除指定市场活动：deleteActivitiesByIDs-->
+    <delete id="deleteActivitiesByIDs">
+        DELETE FROM tbl_activity WHERE id IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

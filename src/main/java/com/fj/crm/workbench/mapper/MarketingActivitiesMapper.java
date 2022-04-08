@@ -64,4 +64,9 @@ public interface MarketingActivitiesMapper {
     * 根据条件查询市场活动，返回总条数
     * */
     Integer selectTotalActivitiesByCondition(Map<String,Object> map);
+
+    /*
+    * 根据id删除指定市场活动
+    * */
+    Integer deleteActivitiesByIDs(List<String> ids);
 }

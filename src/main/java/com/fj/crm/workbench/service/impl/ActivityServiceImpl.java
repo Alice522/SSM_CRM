@@ -28,4 +28,9 @@ public class ActivityServiceImpl implements ActivityService {
     public Integer queryTotalActivitiesByConditionForPage(Map<String, Object> map) {
         return activitiesMapper.selectTotalActivitiesByCondition(map);
     }
+
+    @Override
+    public Integer deleteActivitiesByIDs(List<String> ids) {
+        return activitiesMapper.deleteActivitiesByIDs(ids);
+    }
 }
