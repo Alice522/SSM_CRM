@@ -106,8 +106,37 @@ public class ActivityController {
         }catch (Exception e){
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统繁忙，稍后再试...");
-            e.printStackTrace();
+        }
+        return returnObject;
+    }
 
+    /*
+    * 根据Id查询市场活动
+    * */
+    @RequestMapping("/workbench/activity/queryActivityById.do")
+    @ResponseBody
+    public Object queryActivityById(@RequestBody Map<String,Object> map){
+        return activityService.queryActivityById((String) map.get("id"));
+    }
+
+    /*
+    * 修改指定市场活动
+    * */
+    @RequestMapping("/workbench/activity/updateActivityById.do")
+    @ResponseBody
+    public Object updateActivityById(@RequestBody MarketingActivities activity){
+        ReturnObject returnObject = new ReturnObject();
+        try {
+            Integer res = activityService.updateActivityById(activity);
+            if(res > 0){
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            }else {
+                returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+                returnObject.setMessage("系统繁忙，稍后再试...");
+            }
+        }catch (Exception e){
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统繁忙，稍后再试...");
         }
         return returnObject;
     }

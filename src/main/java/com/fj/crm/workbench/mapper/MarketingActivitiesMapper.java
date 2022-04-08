@@ -69,4 +69,14 @@ public interface MarketingActivitiesMapper {
     * 根据id删除指定市场活动
     * */
     Integer deleteActivitiesByIDs(List<String> ids);
+
+    /*
+    * 根据ID查询市场活动
+    * */
+    MarketingActivities queryActivityById(String id);
+
+    /*
+    * 更新指定市场活动
+    * */
+    Integer updateActivityById(MarketingActivities activity);
 }

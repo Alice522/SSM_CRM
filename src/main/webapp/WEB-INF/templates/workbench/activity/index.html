@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
 
@@ -148,44 +148,46 @@
             <div class="modal-body">
 
                 <form class="form-horizontal" role="form">
-
+                    <input type="hidden" id="edit-id" v-model.trim="editForm.id">
                     <div class="form-group">
                         <label for="edit-marketActivityOwner" class="col-sm-2 control-label">所有者<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <select class="form-control" id="edit-marketActivityOwner">
+                            <select class="form-control" id="edit-marketActivityOwner" v-model="editForm.owner">
                                 <option th:each="user: ${userList}" th:text="${user.getName()}"></option>
                             </select>
                         </div>
                         <label for="edit-marketActivityName" class="col-sm-2 control-label">名称<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-marketActivityName" value="发传单">
+                            <input type="text" class="form-control" id="edit-marketActivityName"
+                                   v-model="editForm.name">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-startTime" value="2020-10-10">
+                            <input type="text" class="form-control myDate" id="edit-startTime" ref="editStartDate" readonly>
                         </div>
                         <label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-endTime" value="2020-10-20">
+                            <input type="text" class="form-control myDate" id="edit-endTime" ref="editEndDate" readonly>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="edit-cost" class="col-sm-2 control-label">成本</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-cost" value="5,000">
+                            <input type="text" class="form-control" id="edit-cost" v-model="editForm.cost">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="edit-describe" class="col-sm-2 control-label">描述</label>
                         <div class="col-sm-10" style="width: 81%;">
-                            <textarea class="form-control" rows="3" id="edit-describe">市场活动Marketing，是指品牌主办或参与的展览会议与公关市场活动，包括自行主办的各类研讨会、客户交流会、演示会、新产品发布会、体验会、答谢会、年会和出席参加并布展或演讲的展览会、研讨会、行业交流会、颁奖典礼等</textarea>
+                            <textarea class="form-control" rows="3" id="edit-describe"
+                                      v-model="editForm.description"></textarea>
                         </div>
                     </div>
 
@@ -193,8 +195,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ref="closeModal" @click="closeModalTarget">关闭</button>
+                <button type="button" class="btn btn-primary" @click="updateActivityById">更新</button>
             </div>
         </div>
     </div>
@@ -291,7 +293,8 @@
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createActivityModal">
                     <span class="glyphicon glyphicon-plus"></span> 创建
                 </button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span
+                <button type="button" class="btn btn-default" data-toggle="modal" v-bind:data-target="editActivityModal"
+                        @click="queryActivityById"><span
                         class="glyphicon glyphicon-pencil"></span> 修改
                 </button>
                 <button type="button" class="btn btn-danger" @click="deleteActivitiesByIDs"><span
@@ -429,9 +432,11 @@
                     pageNo: "",
                     pageSize: ""
                 },
+
                 activitiesList: [],
                 checkAll: false,
-                checks: []
+                checks: [],
+                editActivityModal:""
             }
         },
         beforeMount() {
@@ -452,6 +457,40 @@
         },
 
         methods: {
+            //根据Id查询市场活动
+            queryActivityById: function () {
+                //没有条目被选中
+                if (this.checks.length == 0) {
+                    alert("请选中要修改的市场活动");
+                    return;
+                }
+                //选中多条
+                if (this.checks.length > 1) {
+                    alert("选择要修改的市场活动条数不能超过1条");
+                    return;
+                }
+                this.editActivityModal = "#editActivityModal";
+                axios({
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    },
+                    method: 'post',
+                    dataType: 'json',
+                    url: 'queryActivityById.do',
+                    data: {
+                        id: this.checks[0]
+                    }
+                }).then((res) => {
+                    editActivityModal.editForm.id = res.data.id;
+                    editActivityModal.editForm.owner = res.data.owner;
+                    editActivityModal.editForm.name = res.data.name;
+                    editActivityModal.$refs.editStartDate.value = res.data.startDate;
+                    editActivityModal.$refs.editEndDate.value = res.data.endDate;
+                    editActivityModal.editForm.cost = res.data.cost;
+                    editActivityModal.editForm.description = res.data.description;
+                })
+            },
+
             //根据ID删除指定市场活动
             deleteActivitiesByIDs: function () {
                 //没有条目被选中
@@ -551,6 +590,81 @@
             }
         }
     });
+
+    let editActivityModal = new Vue({
+        el:"#editActivityModal",
+
+        data(){
+            return{
+                editForm: {
+                    id: "",
+                    owner: "",
+                    name: "",
+                    startDate: "",
+                    endDate: "",
+                    cost: "",
+                    description: ""
+                },
+            }
+        },
+        
+        methods:{
+            closeModalTarget: function () {
+                mainPage.editActivityModal = "";
+            },
+
+            //修改市场活动
+            updateActivityById:function () {
+                let startDate = this.$refs.editStartDate.value;
+                let endDate = this.$refs.editEndDate.value;
+
+                if(this.editForm.owner == ""){
+                    alert("所有者不能为空");
+                    return;
+                }
+
+                if(this.editForm.name == ""){
+                    alert("市场名称不能为空");
+                    return;
+                }
+
+                if(startDate !== "" && endDate !== ""){
+                    if(startDate >= endDate){
+                        alert("开始日期不能大于结束日期");
+                        return;
+                    }
+                }else {
+                    alert("开始日期和结束日期不能为空");
+                    return;
+                }
+                this.editForm.startDate = startDate;
+                this.editForm.endDate = endDate;
+
+                let reg = /^([1-9]\d*)|0$/;
+                if(!reg.test(this.editForm.cost)){
+                    alert("成本只能为非负整数");
+                    return;
+                }
+
+                axios({
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    },
+                    method: 'post',
+                    dataType: 'json',
+                    url: 'updateActivityById.do',
+                    data: JSON.stringify(this.editForm)
+                }).then((res) => {
+                    if(res.data.code == "1"){
+                        this.$refs.closeModal.click();
+                        mainPage.queryActivities(true,1,$("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+                    }else {
+                        alert(res.data.message);
+                    }
+                })
+            }
+        }
+    })
 </script>
 </body>
 </html>

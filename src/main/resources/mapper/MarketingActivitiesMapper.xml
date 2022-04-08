@@ -255,4 +255,24 @@
             #{id}
         </foreach>
     </delete>
+
+    <!--根据Id查询市场活动：queryActivityById-->
+    <select id="queryActivityById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tbl_activity
+        WHERE id = #{id}
+    </select>
+
+    <!--根据Id修改指定市场活动：updateActivityById-->
+    <update id="updateActivityById">
+        UPDATE tbl_activity
+        SET owner = #{owner,jdbcType=CHAR},
+            name = #{name,jdbcType=VARCHAR},
+            start_date = #{startDate,jdbcType=CHAR},
+            end_date = #{endDate,jdbcType=CHAR},
+            cost = #{cost,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR}
+        WHERE id = #{id}
+    </update>
 </mapper>

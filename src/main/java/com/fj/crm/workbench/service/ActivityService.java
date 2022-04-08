@@ -13,4 +13,8 @@ public interface ActivityService {
     Integer queryTotalActivitiesByConditionForPage(Map<String,Object> map);
 
     Integer deleteActivitiesByIDs(List<String> ids);
+
+    MarketingActivities queryActivityById(String id);
+
+    Integer updateActivityById(MarketingActivities activity);
 }

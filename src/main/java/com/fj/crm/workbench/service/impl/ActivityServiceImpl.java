@@ -33,4 +33,14 @@ public class ActivityServiceImpl implements ActivityService {
     public Integer deleteActivitiesByIDs(List<String> ids) {
         return activitiesMapper.deleteActivitiesByIDs(ids);
     }
+
+    @Override
+    public MarketingActivities queryActivityById(String id) {
+        return activitiesMapper.queryActivityById(id);
+    }
+
+    @Override
+    public Integer updateActivityById(MarketingActivities activity) {
+        return activitiesMapper.updateActivityById(activity);
+    }
 }
