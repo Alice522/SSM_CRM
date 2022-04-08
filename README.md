@@ -48,12 +48,19 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
     
 ### 2022/4/7 - 市场活动的分页查询与展示，条件查询:
 
-
     1. 项目视频上有错误，查询市场活动的sql语句中的limit后面应该用${beginNo},${pageSize},而不是#{}.此外limit的起始索引应该为0，而不是1
 
     2. vue中调用钩子函数beforeMount()，在页面渲染之前向服务器发送axios异步请求，注意：此时页面还没有渲染，所以无法获取页面中的标签
 
     3. vue中使用v-for，根据列表动态的显示html标签
+    
+### 2022/4/8 - 翻页功能，全选功能，删除市场活动:
+
+    1. 进行翻页操作的时候，注意要把选中的条目和全选重置
+
+    2. 从axios返回给Java的json对象中的数组是一个List对象而不是一个数组，在controller中强转一下可以直接传入service
+
+    3. Mybatis，foreach标签中的collection属性应该填list，表示的是List类型
     
 ## 4️⃣遗留的问题
 
