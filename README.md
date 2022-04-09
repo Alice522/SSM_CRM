@@ -62,6 +62,9 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
     3. Mybatis，foreach标签中的collection属性应该填list，表示的是List类型
     
+### 2022/4/9 - 修改市场活动，导出全部市场活动:
+
+    
 ## 4️⃣遗留的问题
 
 ### 1. 页面问题（下拉列表超出页面）：
