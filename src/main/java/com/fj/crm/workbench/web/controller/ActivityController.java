@@ -9,13 +9,16 @@ import com.fj.crm.settings.service.impl.UserServiceImpl;
 import com.fj.crm.workbench.domain.MarketingActivities;
 import com.fj.crm.workbench.service.impl.ActivityServiceImpl;
 import com.github.pagehelper.PageHelper;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Controller
@@ -27,26 +30,26 @@ public class ActivityController {
     private ActivityServiceImpl activityService;
 
     /*
-    * 市场活动主页面
-    * */
+     * 市场活动主页面
+     * */
     @RequestMapping("/workbench/activity/index.do")
-    public String index(HttpServletRequest servletRequest){
+    public String index(HttpServletRequest servletRequest) {
         //从后台获取所有用户信息，返回前台
         List<User> userList = userService.getAllUser();
-        servletRequest.setAttribute("userList",userList);
+        servletRequest.setAttribute("userList", userList);
         return "/workbench/activity/index";
     }
 
     /*
-    * 创建市场活动
-    * */
+     * 创建市场活动
+     * */
     @RequestMapping("/workbench/activity/saveCreateActivity.do")
     @ResponseBody
-    public Object saveCreateActivity(@RequestBody MarketingActivities activity,HttpServletRequest servletRequest){
+    public Object saveCreateActivity(@RequestBody MarketingActivities activity, HttpServletRequest servletRequest) {
         //获取UUID
         activity.setId(UUIDUtils.getUUID());
         //获取当前登录的用户信息
-        User user =(User) servletRequest.getSession().getAttribute(Contants.SESSION_USER);
+        User user = (User) servletRequest.getSession().getAttribute(Contants.SESSION_USER);
         //市场活动的创建者和创建日期
         activity.setCreateBy(user.getId());
         activity.setCreateTime(DateUtils.formatDateTime(new Date()));
@@ -57,34 +60,34 @@ public class ActivityController {
             //将市场活动存入数据库，并返回影响行数
             int res = activityService.createActivity(activity);
 
-            if(res > 0){
+            if (res > 0) {
                 //存储成功
                 returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
-            }else {
+            } else {
                 //存储失败
                 returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("系统繁忙，稍后再试...");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             //存储失败
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统繁忙，稍后再试...");
         }
-    return returnObject;
+        return returnObject;
     }
 
     /*
-    * 根据条件查询并返回市场活动
-    * */
+     * 根据条件查询并返回市场活动
+     * */
     @RequestMapping("/workbench/activity/queryActivitiesByConditionByPage.do")
     @ResponseBody
-    public Object queryActivitiesByConditionByPage(@RequestBody Map<String,Object> map){
-        Map<String,Object> returnMap = new HashMap<>();
+    public Object queryActivitiesByConditionByPage(@RequestBody Map<String, Object> map) {
+        Map<String, Object> returnMap = new HashMap<>();
         //启动分页查询插件
         PageHelper.startPage((int) map.get("pageNo"), (int) map.get("pageSize"));
         //查询市场活动和总条数
-        returnMap.put("activitiesList",activityService.queryActivitiesByConditionForPage(map));
-        returnMap.put("activitiesTotal",activityService.queryTotalActivitiesByConditionForPage(map));
+        returnMap.put("activitiesList", activityService.queryActivitiesByConditionForPage(map));
+        returnMap.put("activitiesTotal", activityService.queryTotalActivitiesByConditionForPage(map));
         return returnMap;
     }
 
@@ -93,17 +96,17 @@ public class ActivityController {
      * */
     @RequestMapping("/workbench/activity/deleteActivitiesByIDs.do")
     @ResponseBody
-    public Object deleteActivitiesByIDs(@RequestBody Map<String,Object> map){
+    public Object deleteActivitiesByIDs(@RequestBody Map<String, Object> map) {
         ReturnObject returnObject = new ReturnObject();
         try {
             Integer res = activityService.deleteActivitiesByIDs((List<String>) map.get("ids"));
-            if(res > 0){
+            if (res > 0) {
                 returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
-            }else {
+            } else {
                 returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("系统繁忙，稍后再试...");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统繁忙，稍后再试...");
         }
@@ -111,33 +114,64 @@ public class ActivityController {
     }
 
     /*
-    * 根据Id查询市场活动
-    * */
+     * 根据Id查询市场活动
+     * */
     @RequestMapping("/workbench/activity/queryActivityById.do")
     @ResponseBody
-    public Object queryActivityById(@RequestBody Map<String,Object> map){
+    public Object queryActivityById(@RequestBody Map<String, Object> map) {
         return activityService.queryActivityById((String) map.get("id"));
     }
 
     /*
-    * 修改指定市场活动
-    * */
+     * 修改指定市场活动
+     * */
     @RequestMapping("/workbench/activity/updateActivityById.do")
     @ResponseBody
-    public Object updateActivityById(@RequestBody MarketingActivities activity){
+    public Object updateActivityById(@RequestBody MarketingActivities activity, HttpServletRequest request) {
+
+        //设置市场活动的修改者和修改时间
+        User curUser = (User) request.getSession().getAttribute(Contants.SESSION_USER);
+        activity.setEditBy(curUser.getId());
+        activity.setEditTime(DateUtils.formatDateTime(new Date()));
+
         ReturnObject returnObject = new ReturnObject();
         try {
             Integer res = activityService.updateActivityById(activity);
-            if(res > 0){
+            if (res > 0) {
                 returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
-            }else {
+            } else {
                 returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
                 returnObject.setMessage("系统繁忙，稍后再试...");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
             returnObject.setMessage("系统繁忙，稍后再试...");
         }
         return returnObject;
+    }
+
+    /*
+     * 导出所有市场活动，生成Excel文件
+     * */
+    @RequestMapping("/workbench/activity/exportAllActivities.do")
+    public void exportAllActivities(HttpServletResponse response) {
+        //设置响应类型
+        response.setContentType("application/octet-stream;charset=UTF-8");
+        //设置响应头，使浏览器接收到响应信息后，直接打开下载窗口，而不直接打开文件
+        response.setHeader("Content-Disposition", "attachment;filename=ActivitiesList.xls");
+
+        try (
+                //调用service返回HSSFWorkbook对象
+                HSSFWorkbook wb = activityService.writeActivitiesToExcel()
+        ) {
+            //获取输出流
+            ServletOutputStream outputStream = response.getOutputStream();
+            //将Excel文件传入输出流
+            wb.write(outputStream);
+            //刷新输出流
+            outputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

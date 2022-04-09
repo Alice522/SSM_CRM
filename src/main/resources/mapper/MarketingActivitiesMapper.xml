@@ -272,7 +272,19 @@
             start_date = #{startDate,jdbcType=CHAR},
             end_date = #{endDate,jdbcType=CHAR},
             cost = #{cost,jdbcType=VARCHAR},
-            description = #{description,jdbcType=VARCHAR}
+            description = #{description,jdbcType=VARCHAR},
+            edit_by = #{editBy},
+            edit_time = #{editTime}
         WHERE id = #{id}
     </update>
+
+    <!--查询所有市场活动：queryAllActivities-->
+    <select id="queryAllActivities" resultMap="BaseResultMap">
+        SELECT ta.id,ta.owner,ta.name,ta.start_date,ta.end_date,ta.cost,ta.description,
+               tu.name as create_by,tu2.name as edit_by,ta.edit_time
+        FROM tbl_activity ta
+        JOIN tbl_user tu ON ta.create_by = tu.id
+        LEFT JOIN tbl_user tu2 ON ta.edit_by = tu2.id
+        ORDER BY ta.create_time DESC
+    </select>
 </mapper>

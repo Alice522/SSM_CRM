@@ -79,4 +79,9 @@ public interface MarketingActivitiesMapper {
     * 更新指定市场活动
     * */
     Integer updateActivityById(MarketingActivities activity);
+
+    /*
+    * 查询所有市场活动
+    * */
+    List<MarketingActivities> queryAllActivities();
 }

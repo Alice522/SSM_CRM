@@ -305,7 +305,7 @@
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importActivityModal">
                     <span class="glyphicon glyphicon-import"></span> 上传列表数据（导入）
                 </button>
-                <button id="exportActivityAllBtn" type="button" class="btn btn-default"><span
+                <button id="exportActivityAllBtn" type="button" class="btn btn-default" @click="exportAllActivities"><span
                         class="glyphicon glyphicon-export"></span> 下载列表数据（批量导出）
                 </button>
                 <button id="exportActivityXzBtn" type="button" class="btn btn-default"><span
@@ -457,6 +457,11 @@
         },
 
         methods: {
+            //导出所有市场活动
+            exportAllActivities: function (){
+                window.location.href="/CRM/workbench/activity/exportAllActivities.do";
+            },
+
             //根据Id查询市场活动
             queryActivityById: function () {
                 //没有条目被选中
