@@ -68,7 +68,7 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
 ### 2022/4/10 - 导入市场活动，市场活动备注的增删改查:
 
-    1. 文件上传用到MultipartFile类，需要引入相关插件并在MVC配置文件中配置相关bean
+    1. 文件上传用到MultipartFile类，需要引入相关插件并在MVC配置文件中配置multipartResolver解析器bean
 
     2. 将thymeleaf中的变量传入vue方法，语法为：th:@click="|getName(${person.name})|"
     
