@@ -17,6 +17,8 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 ## 2️⃣已实现的功能
 
  **:star: 账号登录**
+ 
+ **:star: 市场活动**
 
 ## 3️⃣日志
 
@@ -64,6 +66,11 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
     
 ### 2022/4/9 - 修改市场活动，导出全部市场活动:
 
+### 2022/4/10 - 导入市场活动，市场活动备注的增删改查:
+
+    1. 文件上传用到MultipartFile类，需要引入相关插件并在MVC配置文件中配置相关bean
+
+    2. 将thymeleaf中的变量传入vue方法，语法为：th:@click="|getName(${person.name})|"
     
 ## 4️⃣遗留的问题
 
