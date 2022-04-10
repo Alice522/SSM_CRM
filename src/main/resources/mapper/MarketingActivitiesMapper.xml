@@ -258,10 +258,12 @@
 
     <!--根据Id查询市场活动：queryActivityById-->
     <select id="queryActivityById" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM tbl_activity
-        WHERE id = #{id}
+        SELECT a.id,a.owner,a.name,a.start_date,a.end_date,a.cost,a.description,a.create_time,
+               tu.name as create_by,tu2.name as edit_by,a.edit_time
+        FROM tbl_activity a
+        JOIN tbl_user tu ON a.create_by = tu.id
+        LEFT JOIN tbl_user tu2 ON a.edit_by = tu2.id
+        WHERE a.id = #{id}
     </select>
 
     <!--根据Id修改指定市场活动：updateActivityById-->

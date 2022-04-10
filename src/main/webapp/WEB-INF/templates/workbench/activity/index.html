@@ -168,7 +168,8 @@
                     <div class="form-group">
                         <label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control myDate" id="edit-startTime" ref="editStartDate" readonly>
+                            <input type="text" class="form-control myDate" id="edit-startTime" ref="editStartDate"
+                                   readonly>
                         </div>
                         <label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
                         <div class="col-sm-10" style="width: 300px;">
@@ -195,7 +196,9 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" ref="closeModal" @click="closeModalTarget">关闭</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ref="closeModal"
+                        @click="closeModalTarget">关闭
+                </button>
                 <button type="button" class="btn btn-primary" @click="updateActivityById">更新</button>
             </div>
         </div>
@@ -234,7 +237,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" ref="close">关闭</button>
-                <button id="importActivityBtn" type="button" class="btn btn-primary" @click="importActivitiesFile">导入</button>
+                <button id="importActivityBtn" type="button" class="btn btn-primary" @click="importActivitiesFile">导入
+                </button>
             </div>
         </div>
     </div>
@@ -293,7 +297,7 @@
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createActivityModal">
                     <span class="glyphicon glyphicon-plus"></span> 创建
                 </button>
-                <button type="button" class="btn btn-default" data-toggle="modal" v-bind:data-target="editActivityModal"
+                <button type="button" class="btn btn-default" data-toggle="modal" v-bind:data-target="targetModel"
                         @click="queryActivityById"><span
                         class="glyphicon glyphicon-pencil"></span> 修改
                 </button>
@@ -305,7 +309,8 @@
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importActivityModal">
                     <span class="glyphicon glyphicon-import"></span> 上传列表数据（导入）
                 </button>
-                <button id="exportActivityAllBtn" type="button" class="btn btn-default" @click="exportAllActivities"><span
+                <button id="exportActivityAllBtn" type="button" class="btn btn-default"
+                        @click="exportAllActivities"><span
                         class="glyphicon glyphicon-export"></span> 下载列表数据（批量导出）
                 </button>
                 <button id="exportActivityXzBtn" type="button" class="btn btn-default"><span
@@ -327,8 +332,8 @@
                 <tbody>
                 <tr v-for="(activity,i) in activitiesList" :key="activity.id" class="active">
                     <td><input type="checkbox" v-model="checks" :value="activity.id"/></td>
-                    <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='detail.html';">{{activity.name}}</a></td>
+                    <td><a style="text-decoration: none; cursor: pointer;" @click="displayDetail(activity.id)">{{activity.name}}</a>
+                    </td>
                     <td>{{activity.owner}}</td>
                     <td>{{activity.startDate}}</td>
                     <td>{{activity.endDate}}</td>
@@ -436,7 +441,7 @@
                 activitiesList: [],
                 checkAll: false,
                 checks: [],
-                editActivityModal:""
+                targetModel: ""
             }
         },
         beforeMount() {
@@ -457,9 +462,13 @@
         },
 
         methods: {
+            //显示市场活动详情页
+            displayDetail: function (id) {
+                window.location.href = "/CRM/workbench/activity/queryActivityDetail/" + id;
+            },
             //导出所有市场活动
-            exportAllActivities: function (){
-                window.location.href="/CRM/workbench/activity/exportAllActivities.do";
+            exportAllActivities: function () {
+                window.location.href = "/CRM/workbench/activity/exportAllActivities.do";
             },
 
             //根据Id查询市场活动
@@ -474,7 +483,7 @@
                     alert("选择要修改的市场活动条数不能超过1条");
                     return;
                 }
-                this.editActivityModal = "#editActivityModal";
+                this.targetModel = "#editActivityModal";
                 axios({
                     headers: {
                         "Content-Type": "application/json;charset=UTF-8"
@@ -597,10 +606,10 @@
     });
 
     let editActivityModal = new Vue({
-        el:"#editActivityModal",
+        el: "#editActivityModal",
 
-        data(){
-            return{
+        data() {
+            return {
                 editForm: {
                     id: "",
                     owner: "",
@@ -612,33 +621,33 @@
                 },
             }
         },
-        
-        methods:{
+
+        methods: {
             closeModalTarget: function () {
-                mainPage.editActivityModal = "";
+                mainPage.targetModel = "";
             },
 
             //修改市场活动
-            updateActivityById:function () {
+            updateActivityById: function () {
                 let startDate = this.$refs.editStartDate.value;
                 let endDate = this.$refs.editEndDate.value;
 
-                if(this.editForm.owner == ""){
+                if (this.editForm.owner == "") {
                     alert("所有者不能为空");
                     return;
                 }
 
-                if(this.editForm.name == ""){
+                if (this.editForm.name == "") {
                     alert("市场名称不能为空");
                     return;
                 }
 
-                if(startDate !== "" && endDate !== ""){
-                    if(startDate >= endDate){
+                if (startDate !== "" && endDate !== "") {
+                    if (startDate >= endDate) {
                         alert("开始日期不能大于结束日期");
                         return;
                     }
-                }else {
+                } else {
                     alert("开始日期和结束日期不能为空");
                     return;
                 }
@@ -646,7 +655,7 @@
                 this.editForm.endDate = endDate;
 
                 let reg = /^([1-9]\d*)|0$/;
-                if(!reg.test(this.editForm.cost)){
+                if (!reg.test(this.editForm.cost)) {
                     alert("成本只能为非负整数");
                     return;
                 }
@@ -660,10 +669,10 @@
                     url: 'updateActivityById.do',
                     data: JSON.stringify(this.editForm)
                 }).then((res) => {
-                    if(res.data.code == "1"){
+                    if (res.data.code == "1") {
                         this.$refs.closeModal.click();
-                        mainPage.queryActivities(true,1,$("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
-                    }else {
+                        mainPage.queryActivities(true, 1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+                    } else {
                         alert(res.data.message);
                     }
                 })
@@ -673,22 +682,22 @@
 
     let importActivityModal = new Vue({
         el: "#importActivityModal",
-        methods:{
-            importActivitiesFile:function () {
+        methods: {
+            importActivitiesFile: function () {
                 let fileName = document.querySelector('input[type=file]').value;
-                let suffix = fileName.substring(fileName.lastIndexOf('.')+1).toLocaleLowerCase();
-                if(suffix != "xls"){
+                let suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toLocaleLowerCase();
+                if (suffix != "xls") {
                     alert("仅支持xls格式文件");
                     return;
                 }
                 let file = document.querySelector('input[type=file]').files[0];
-                if(file.size > 5*1024*1024){
+                if (file.size > 5 * 1024 * 1024) {
                     alert("文件不能超过5mb");
                     return;
                 }
 
                 let formData = new FormData();
-                formData.append("file",file);
+                formData.append("file", file);
 
                 axios({
                     // 设置axios的参数
@@ -699,11 +708,11 @@
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then((res) => {
-                    if(res.data.code == '1'){
+                    if (res.data.code == '1') {
                         alert("成功导入" + res.data.returnData + "条市场活动");
                         this.$refs.close.click();
                         mainPage.queryActivities(true, 1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
-                    }else {
+                    } else {
                         alert(res.data.message);
                     }
                 })

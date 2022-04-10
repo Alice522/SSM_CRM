@@ -89,4 +89,5 @@ public interface MarketingActivitiesMapper {
     * 批量创建市场活动
     * */
     Integer insertBatchActivities(List<MarketingActivities> activities);
+
 }

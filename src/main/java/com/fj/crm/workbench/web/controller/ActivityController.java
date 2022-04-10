@@ -7,7 +7,9 @@ import com.fj.crm.commons.utils.HSSFUtils;
 import com.fj.crm.commons.utils.UUIDUtils;
 import com.fj.crm.settings.domain.User;
 import com.fj.crm.settings.service.impl.UserServiceImpl;
+import com.fj.crm.workbench.domain.ActivitiesRemark;
 import com.fj.crm.workbench.domain.MarketingActivities;
+import com.fj.crm.workbench.service.impl.ActivitiesRemarkServiceImpl;
 import com.fj.crm.workbench.service.impl.ActivityServiceImpl;
 import com.github.pagehelper.PageHelper;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -34,7 +36,6 @@ public class ActivityController {
 
     @Autowired
     private ActivityServiceImpl activityService;
-
     /*
      * 市场活动主页面
      * */
