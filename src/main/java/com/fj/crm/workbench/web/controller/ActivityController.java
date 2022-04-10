@@ -3,22 +3,28 @@ package com.fj.crm.workbench.web.controller;
 import com.fj.crm.commons.contants.Contants;
 import com.fj.crm.commons.domain.ReturnObject;
 import com.fj.crm.commons.utils.DateUtils;
+import com.fj.crm.commons.utils.HSSFUtils;
 import com.fj.crm.commons.utils.UUIDUtils;
 import com.fj.crm.settings.domain.User;
 import com.fj.crm.settings.service.impl.UserServiceImpl;
 import com.fj.crm.workbench.domain.MarketingActivities;
 import com.fj.crm.workbench.service.impl.ActivityServiceImpl;
 import com.github.pagehelper.PageHelper;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.*;
 
 @Controller
@@ -173,5 +179,59 @@ public class ActivityController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /*
+    * 批量导入市场活动
+    * */
+    @RequestMapping("/workbench/activity/importBatchActivities.do")
+    @ResponseBody
+    public Object importBatchActivities(MultipartFile file,HttpServletRequest request){
+        User curUser = (User) request.getSession().getAttribute(Contants.SESSION_USER);
+        ReturnObject returnObject = new ReturnObject();
+        List<MarketingActivities> activities = new ArrayList<>();
+        try (
+                InputStream is = file.getInputStream();
+                HSSFWorkbook sheets = new HSSFWorkbook(is);
+        ) {
+            HSSFSheet sheet = sheets.getSheetAt(0);
+            HSSFRow row = null;
+            HSSFCell cell = null;
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                row = sheet.getRow(i);
+                MarketingActivities activity = new MarketingActivities();
+                activity.setId(UUIDUtils.getUUID());
+                activity.setOwner(curUser.getName());
+                activity.setCreateBy(curUser.getId());
+                activity.setCreateTime(DateUtils.formatDateTime(new Date()));
+
+                for (int j = 0; j < row.getLastCellNum(); j++) {
+                    cell = row.getCell(j);
+
+                    String cellValue = HSSFUtils.getCellValueForString(cell);
+
+                    if (j == 0) {
+                        activity.setName(cellValue);
+                    } else if (j == 1) {
+                        activity.setStartDate(cellValue);
+                    } else if (j == 2) {
+                        activity.setEndDate(cellValue);
+                    } else if (j == 3) {
+                        activity.setCost(cellValue);
+                    } else if (j == 4) {
+                        activity.setDescription(cellValue);
+                    }
+                }
+                activities.add(activity);
+            }
+            Integer res = activityService.importFileToDatabase(activities);
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setReturnData(res);
+        }catch (Exception e){
+            e.printStackTrace();
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统繁忙，请稍后重试...");
+        }
+        return returnObject;
     }
 }

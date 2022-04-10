@@ -233,8 +233,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button id="importActivityBtn" type="button" class="btn btn-primary">导入</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ref="close">关闭</button>
+                <button id="importActivityBtn" type="button" class="btn btn-primary" @click="importActivitiesFile">导入</button>
             </div>
         </div>
     </div>
@@ -663,6 +663,46 @@
                     if(res.data.code == "1"){
                         this.$refs.closeModal.click();
                         mainPage.queryActivities(true,1,$("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+                    }else {
+                        alert(res.data.message);
+                    }
+                })
+            }
+        }
+    });
+
+    let importActivityModal = new Vue({
+        el: "#importActivityModal",
+        methods:{
+            importActivitiesFile:function () {
+                let fileName = document.querySelector('input[type=file]').value;
+                let suffix = fileName.substring(fileName.lastIndexOf('.')+1).toLocaleLowerCase();
+                if(suffix != "xls"){
+                    alert("仅支持xls格式文件");
+                    return;
+                }
+                let file = document.querySelector('input[type=file]').files[0];
+                if(file.size > 5*1024*1024){
+                    alert("文件不能超过5mb");
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("file",file);
+
+                axios({
+                    // 设置axios的参数
+                    url: 'importBatchActivities.do',
+                    data: formData,
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then((res) => {
+                    if(res.data.code == '1'){
+                        alert("成功导入" + res.data.returnData + "条市场活动");
+                        this.$refs.close.click();
+                        mainPage.queryActivities(true, 1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
                     }else {
                         alert(res.data.message);
                     }

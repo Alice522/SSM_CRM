@@ -84,4 +84,9 @@ public interface MarketingActivitiesMapper {
     * 查询所有市场活动
     * */
     List<MarketingActivities> queryAllActivities();
+
+    /*
+    * 批量创建市场活动
+    * */
+    Integer insertBatchActivities(List<MarketingActivities> activities);
 }

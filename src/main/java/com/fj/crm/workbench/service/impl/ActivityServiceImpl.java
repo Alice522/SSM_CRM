@@ -1,11 +1,15 @@
 package com.fj.crm.workbench.service.impl;
 
+import com.fj.crm.commons.utils.UUIDUtils;
 import com.fj.crm.workbench.domain.MarketingActivities;
 import com.fj.crm.workbench.mapper.MarketingActivitiesMapper;
 import com.fj.crm.workbench.service.ActivityService;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -106,5 +110,10 @@ public class ActivityServiceImpl implements ActivityService {
             }
         }
         return wb;
+    }
+
+    @Override
+    public Integer importFileToDatabase(List<MarketingActivities> activities) {
+        return activitiesMapper.insertBatchActivities(activities);
     }
 }

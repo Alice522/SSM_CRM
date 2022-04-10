@@ -3,6 +3,7 @@ package com.fj.crm.workbench.service;
 import com.fj.crm.workbench.domain.MarketingActivities;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -20,4 +21,6 @@ public interface ActivityService {
     Integer updateActivityById(MarketingActivities activity);
 
     HSSFWorkbook writeActivitiesToExcel();
+
+    Integer importFileToDatabase(List<MarketingActivities> activities);
 }

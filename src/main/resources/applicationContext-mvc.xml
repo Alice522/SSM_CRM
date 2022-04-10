@@ -59,7 +59,7 @@
     <!--首页控制器-->
     <mvc:view-controller path="/" view-name="index"/>
 
-    <!--    配置拦截器-->
+    <!--配置拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
             <!--表示对那些资源进行拦截操作-->
@@ -72,4 +72,10 @@
             <bean class="com.fj.crm.settings.web.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <!--配置上传文件解析器：id必须是multipartResolver-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="#{1024*1024*5}"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
 </beans>

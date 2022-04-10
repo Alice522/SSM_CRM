@@ -287,4 +287,14 @@
         LEFT JOIN tbl_user tu2 ON ta.edit_by = tu2.id
         ORDER BY ta.create_time DESC
     </select>
+
+    <!--批量创建市场活动:insertBatchActivities-->
+    <insert id="insertBatchActivities">
+        INSERT INTO tbl_activity(id, owner, name, start_date, end_date, cost, description, create_time, create_by)
+        VALUES
+        <foreach collection="list" item="activity" separator=",">
+           (#{activity.id},#{activity.owner},#{activity.name},#{activity.startDate},
+            #{activity.endDate},#{activity.cost},#{activity.description},#{activity.createTime},#{activity.createBy})
+        </foreach>
+    </insert>
 </mapper>
