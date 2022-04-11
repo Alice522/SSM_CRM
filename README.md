@@ -72,6 +72,9 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
     2. 将thymeleaf中的变量传入vue方法，语法为：th:@click="|getName(${person.name})|"
     
+
+### 2022/4/11 - 线索主页面，创建线索:
+
 ## 4️⃣遗留的问题
 
 ### 1. 页面问题（下拉列表超出页面）：
