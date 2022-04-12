@@ -318,25 +318,25 @@
     LEFT JOIN tbl_user tu2 ON tu2.id = tc.edit_by
     <where>
       <if test="fullname!=null and fullname!=''">
-        AND tc.fullname = #{fullname}
+        AND tc.fullname LIKE '%' #{fullname} '%'
       </if>
       <if test="company!=null and company!=''">
-        AND tc.company = #{company}
+        AND tc.company  LIKE '%' #{company} '%'
       </if>
       <if test="phone!=null and phone!=''">
-        AND tc.phone = #{phone}
+        AND tc.phone  LIKE '%' #{phone} '%'
       </if>
       <if test="source!=null and source!=''">
-        AND tc.source = #{source}
+        AND tc.source  LIKE '%' #{source} '%'
       </if>
       <if test="owner!=null and owner!=''">
-        AND tc.owner = #{owner}
+        AND tc.owner  LIKE '%' #{owner} '%'
       </if>
       <if test="mphone!=null and mphone!=''">
-        AND tc.mphone = #{mphone}
+        AND tc.mphone  LIKE '%' #{mphone} '%'
       </if>
       <if test="state!=null and state!=''">
-        AND tc.state = #{state}
+        AND tc.state  LIKE '%' #{state} '%'
       </if>
     </where>
     ORDER BY tc.create_time DESC
@@ -350,25 +350,25 @@
     LEFT JOIN tbl_user tu2 ON tu2.id = tc.edit_by
     <where>
       <if test="fullname!=null and fullname!=''">
-        AND tc.fullname = #{fullname}
+        AND tc.fullname LIKE '%' #{fullname} '%'
       </if>
       <if test="company!=null and company!=''">
-        AND tc.company = #{company}
+        AND tc.company  LIKE '%' #{company} '%'
       </if>
       <if test="phone!=null and phone!=''">
-        AND tc.phone = #{phone}
+        AND tc.phone  LIKE '%' #{phone} '%'
       </if>
       <if test="source!=null and source!=''">
-        AND tc.source = #{source}
+        AND tc.source  LIKE '%' #{source} '%'
       </if>
       <if test="owner!=null and owner!=''">
-        AND tc.owner = #{owner}
+        AND tc.owner  LIKE '%' #{owner} '%'
       </if>
       <if test="mphone!=null and mphone!=''">
-        AND tc.mphone = #{mphone}
+        AND tc.mphone  LIKE '%' #{mphone} '%'
       </if>
       <if test="state!=null and state!=''">
-        AND tc.state = #{state}
+        AND tc.state  LIKE '%' #{state} '%'
       </if>
     </where>
   </select>
