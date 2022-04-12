@@ -8,6 +8,7 @@ import com.fj.crm.settings.domain.User;
 import com.fj.crm.settings.service.impl.UserServiceImpl;
 import com.fj.crm.workbench.domain.Clue;
 import com.fj.crm.workbench.service.impl.ClueServiceImpl;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ClueController {
@@ -58,5 +61,15 @@ public class ClueController {
             returnObject.setMessage("系统繁忙，请稍后重试...");
         }
         return returnObject;
+    }
+
+    @RequestMapping("/workbench/clue/queryCluesByCondition.do")
+    @ResponseBody
+    public Object queryCluesByCondition(@RequestBody Map<String,Object> map){
+        Map<String,Object> returnMap = new HashMap<>();
+        PageHelper.startPage((int) map.get("pageNo"),(int) map.get("pageSize"));
+        returnMap.put("clueList",clueService.queryCluesByCondition(map));
+        returnMap.put("clueListTotal",clueService.queryCluesByConditionGetTotal(map));
+        return returnMap;
     }
 }

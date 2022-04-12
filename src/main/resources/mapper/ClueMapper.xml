@@ -307,4 +307,69 @@
       address = #{address,jdbcType=VARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
+
+  <!--根据条件查询线索-->
+  <select id="selectCluesByCondition" resultMap="BaseResultMap">
+    SELECT tc.id,tc.fullname,tc.appellation,tc.owner,tc.company,tc.job,tc.email,tc.phone,
+           tc.website,tc.mphone,tc.state,tc.source,tu.name AS create_by,tc.create_time,
+           tu2.name AS edit_by,tc.edit_time,tc.description,tc.contact_summary,tc.next_contact_time,tc.address
+    FROM tbl_clue tc
+    JOIN tbl_user tu ON tu.id = tc.create_by
+    LEFT JOIN tbl_user tu2 ON tu2.id = tc.edit_by
+    <where>
+      <if test="fullname!=null and fullname!=''">
+        AND tc.fullname = #{fullname}
+      </if>
+      <if test="company!=null and company!=''">
+        AND tc.company = #{company}
+      </if>
+      <if test="phone!=null and phone!=''">
+        AND tc.phone = #{phone}
+      </if>
+      <if test="source!=null and source!=''">
+        AND tc.source = #{source}
+      </if>
+      <if test="owner!=null and owner!=''">
+        AND tc.owner = #{owner}
+      </if>
+      <if test="mphone!=null and mphone!=''">
+        AND tc.mphone = #{mphone}
+      </if>
+      <if test="state!=null and state!=''">
+        AND tc.state = #{state}
+      </if>
+    </where>
+    ORDER BY tc.create_time DESC
+  </select>
+
+  <!--返回根据条件查询线索的总数-->
+  <select id="selectCluesByConditionGetTotal" resultType="integer">
+    SELECT COUNT(*)
+    FROM tbl_clue tc
+    JOIN tbl_user tu ON tu.id = tc.create_by
+    LEFT JOIN tbl_user tu2 ON tu2.id = tc.edit_by
+    <where>
+      <if test="fullname!=null and fullname!=''">
+        AND tc.fullname = #{fullname}
+      </if>
+      <if test="company!=null and company!=''">
+        AND tc.company = #{company}
+      </if>
+      <if test="phone!=null and phone!=''">
+        AND tc.phone = #{phone}
+      </if>
+      <if test="source!=null and source!=''">
+        AND tc.source = #{source}
+      </if>
+      <if test="owner!=null and owner!=''">
+        AND tc.owner = #{owner}
+      </if>
+      <if test="mphone!=null and mphone!=''">
+        AND tc.mphone = #{mphone}
+      </if>
+      <if test="state!=null and state!=''">
+        AND tc.state = #{state}
+      </if>
+    </where>
+  </select>
 </mapper>

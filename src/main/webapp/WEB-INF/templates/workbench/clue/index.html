@@ -371,7 +371,7 @@
     </div>
 </div>
 
-<div style="position: relative; top: -20px; left: 0px; width: 100%; height: 100%;">
+<div style="position: relative; top: -20px; left: 0px; width: 100%; height: 100%;" id="clueMainPage">
 
     <div style="width: 100%; position: absolute;top: 5px; left: 10px;">
 
@@ -381,28 +381,28 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">名称</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" v-model.trim="conditionForm.fullname">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">公司</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" v-model.trim="conditionForm.company">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">公司座机</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" v-model.trim="conditionForm.phone">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">线索来源</div>
-                        <select class="form-control">
+                        <select class="form-control"  v-model.trim="conditionForm.source">
                             <option></option>
                             <option>广告</option>
                             <option>推销电话</option>
@@ -427,7 +427,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">所有者</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" v-model.trim="conditionForm.owner">
                     </div>
                 </div>
 
@@ -435,14 +435,14 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">手机</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" v-model.trim="conditionForm.mphone">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">线索状态</div>
-                        <select class="form-control">
+                        <select class="form-control" v-model.trim="conditionForm.state">
                             <option></option>
                             <option>试图联系</option>
                             <option>将来联系</option>
@@ -455,7 +455,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-default">查询</button>
+                <button type="submit" class="btn btn-default" @click="queryClueByCondition(1,10)">查询</button>
 
             </form>
         </div>
@@ -488,30 +488,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="(clue,i) in clueList" :key="clue.id">
                     <td><input type="checkbox"/></td>
                     <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='detail.html';">李四先生</a></td>
-                    <td>动力节点</td>
-                    <td>010-84846003</td>
-                    <td>12345678901</td>
-                    <td>广告</td>
-                    <td>zhangsan</td>
-                    <td>已联系</td>
-                </tr>
-                <tr class="active">
-                    <td><input type="checkbox"/></td>
-                    <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='detail.html';">李四先生</a></td>
-                    <td>动力节点</td>
-                    <td>010-84846003</td>
-                    <td>12345678901</td>
-                    <td>广告</td>
-                    <td>zhangsan</td>
-                    <td>已联系</td>
+                           onclick="window.location.href='detail.html';">{{clue.fullname}}</a></td>
+                    <td>{{clue.company}}</td>
+                    <td>{{clue.phone}}</td>
+                    <td>{{clue.mphone}}</td>
+                    <td>{{clue.source}}</td>
+                    <td>{{clue.owner}}</td>
+                    <td>{{clue.state}}</td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div v-for="item in clueList">
+            <h1>Hi</h1>
         </div>
 
         <div style="height: 50px; position: relative;top: 60px;">
@@ -606,6 +598,44 @@
                     }else {
                         alert(res.data.message);
                     }
+                })
+            }
+        }
+    });
+
+    let clueMainPage = new Vue({
+        el:"#clueMainPage",
+        data(){
+            return{
+                conditionForm:{
+                    fullname:"",
+                    company:"",
+                    phone:"",
+                    source:"",
+                    owner:"",
+                    mphone:"",
+                    state:"",
+                    pageNo:"",
+                    pageSize:""
+                },
+                clueList:[]
+            }
+        },
+        methods: {
+            queryClueByCondition:function (pageNo,pageSize) {
+                this.conditionForm.pageNo = pageNo;
+                this.conditionForm.pageSize = pageSize;
+
+                axios({
+                    url: '/CRM/workbench/clue/queryCluesByCondition.do',
+                    method: 'post',
+                    dataType: 'json',
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    },
+                    data: JSON.stringify(this.conditionForm)
+                }).then((res) => {
+                    this.clueList = res.data.clueList;
                 })
             }
         }
