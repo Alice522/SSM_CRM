@@ -77,6 +77,8 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
 ### 2022/4/12 - 分页条件查询线索:
 
+### 2022/4/13 - 线索详情页，线索备注，关联市场活动显示:
+
 ## 4️⃣遗留的问题
 
 ### 1. 页面问题（下拉列表超出页面）：
