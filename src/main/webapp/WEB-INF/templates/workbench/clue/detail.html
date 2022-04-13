@@ -122,7 +122,8 @@
 <!-- 大标题 -->
 <div style="position: relative; left: 40px; top: -30px;">
     <div class="page-header">
-        <h3 th:text="${queryClue.fullname}+${queryClue.appellation}+' '"><small th:text="${queryClue.company}">动力节点</small></h3>
+        <h3 th:text="${queryClue.fullname}+${queryClue.appellation}+' '"><small
+                th:text="${queryClue.company}">动力节点</small></h3>
     </div>
     <div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
         <button type="button" class="btn btn-default" onclick="window.location.href='convert.html';"><span
@@ -140,41 +141,51 @@
 <div style="position: relative; top: -70px;">
     <div style="position: relative; left: 40px; height: 30px;">
         <div style="width: 300px; color: gray;">名称</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b th:text="${queryClue.fullname}+${queryClue.appellation}"></b></div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b
+                th:text="${queryClue.fullname}+${queryClue.appellation}"></b></div>
         <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">所有者</div>
-        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b th:text="${queryClue.owner}"></b></div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b
+                th:text="${queryClue.owner}"></b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
     </div>
     <div style="position: relative; left: 40px; height: 30px; top: 10px;">
         <div style="width: 300px; color: gray;">公司</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b th:text="${queryClue.company}"></b></div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b
+                th:text="${queryClue.company}"></b></div>
         <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">职位</div>
-        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b th:text="${queryClue.job}"></b></div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b th:text="${queryClue.job}"></b>
+        </div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
     </div>
     <div style="position: relative; left: 40px; height: 30px; top: 20px;">
         <div style="width: 300px; color: gray;">邮箱</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b th:text="${queryClue.email}"></b></div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b
+                th:text="${queryClue.email}"></b></div>
         <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">公司座机</div>
-        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b th:text="${queryClue.phone}"></b></div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b
+                th:text="${queryClue.phone}"></b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
     </div>
     <div style="position: relative; left: 40px; height: 30px; top: 30px;">
         <div style="width: 300px; color: gray;">公司网站</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b th:text="${queryClue.website}"></b></div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b
+                th:text="${queryClue.website}"></b></div>
         <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">手机</div>
-        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b th:text="${queryClue.mphone}"></b></div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b
+                th:text="${queryClue.mphone}"></b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
     </div>
     <div style="position: relative; left: 40px; height: 30px; top: 40px;">
         <div style="width: 300px; color: gray;">线索状态</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b th:text="${queryClue.state}"></b></div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b
+                th:text="${queryClue.state}"></b></div>
         <div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">线索来源</div>
-        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b th:text="${queryClue.source}"></b></div>
+        <div style="width: 300px;position: relative; left: 650px; top: -60px;">&nbsp;<b
+                th:text="${queryClue.source}"></b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
     </div>
@@ -194,7 +205,7 @@
         <div style="width: 300px; color: gray;">描述</div>
         <div style="width: 630px;position: relative; left: 200px; top: -20px;">
             &nbsp;<b th:text="${queryClue.description}">
-            </b>
+        </b>
         </div>
         <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
     </div>
@@ -202,13 +213,14 @@
         <div style="width: 300px; color: gray;">联系纪要</div>
         <div style="width: 630px;position: relative; left: 200px; top: -20px;">
             &nbsp;<b th:text="${queryClue.contactSummary}">
-            </b>
+        </b>
         </div>
         <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
     </div>
     <div style="position: relative; left: 40px; height: 30px; top: 90px;">
         <div style="width: 300px; color: gray;">下次联系时间</div>
-        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b th:text="${queryClue.nextContactTime}"></b> </div>
+        <div style="width: 300px;position: relative; left: 200px; top: -20px;">&nbsp;<b
+                th:text="${queryClue.nextContactTime}"></b></div>
         <div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px; "></div>
     </div>
     <div style="position: relative; left: 40px; height: 30px; top: 100px;">
@@ -227,29 +239,13 @@
     </div>
 
     <!-- 备注1 -->
-    <div class="remarkDiv" style="height: 60px;">
-        <img title="zhangsan" src="../../image/user-thumbnail.png" style="width: 30px; height:30px;">
+    <div th:each="clueRemark:${clueRemarks}" class="remarkDiv" style="height: 60px;">
+        <img th:attr="title=${clueRemark.createBy},src=@{/image/user-thumbnail.png}" style="width: 30px; height:30px;">
         <div style="position: relative; top: -40px; left: 40px;">
-            <h5>哎呦！</h5>
-            <font color="gray">线索</font> <font color="gray">-</font> <b>李四先生-动力节点</b> <small style="color: gray;">
-            2017-01-22 10:10:10 由zhangsan</small>
-            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 备注2 -->
-    <div class="remarkDiv" style="height: 60px;">
-        <img title="zhangsan" src="../../image/user-thumbnail.png" style="width: 30px; height:30px;">
-        <div style="position: relative; top: -40px; left: 40px;">
-            <h5>呵呵！</h5>
-            <font color="gray">线索</font> <font color="gray">-</font> <b>李四先生-动力节点</b> <small style="color: gray;">
-            2017-01-22 10:20:10 由zhangsan</small>
+            <h5 th:text="${clueRemark.noteContent}"></h5>
+            <font color="gray">线索</font> <font color="gray">-</font> <b
+                th:text="${queryClue.fullname}+${queryClue.appellation}+'-'+${queryClue.company}"></b>
+            <small th:text="${clueRemark.createTime}+' 由'+${clueRemark.createBy}" style="color: gray;"></small>
             <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
                 <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit"
                                                                    style="font-size: 20px; color: #E6E6E6;"></span></a>
@@ -290,19 +286,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>发传单</td>
-                    <td>2020-10-10</td>
-                    <td>2020-10-20</td>
-                    <td>zhangsan</td>
-                    <td><a href="javascript:void(0);" style="text-decoration: none;"><span
-                            class="glyphicon glyphicon-remove"></span>解除关联</a></td>
-                </tr>
-                <tr>
-                    <td>发传单</td>
-                    <td>2020-10-10</td>
-                    <td>2020-10-20</td>
-                    <td>zhangsan</td>
+                <tr th:each="activity:${activities}">
+                    <td th:text="${activity.name}"></td>
+                    <td th:text="${activity.startDate}"></td>
+                    <td th:text="${activity.endDate}"></td>
+                    <td th:text="${activity.owner}"></td>
                     <td><a href="javascript:void(0);" style="text-decoration: none;"><span
                             class="glyphicon glyphicon-remove"></span>解除关联</a></td>
                 </tr>
