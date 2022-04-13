@@ -12,4 +12,6 @@ public interface ClueService {
     List<Clue> queryCluesByCondition(Map<String,Object> map);
 
     Integer queryCluesByConditionGetTotal(Map<String,Object> map);
+
+    Clue queryClueById(String id);
 }

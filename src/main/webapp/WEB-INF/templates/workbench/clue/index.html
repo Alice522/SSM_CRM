@@ -508,7 +508,7 @@
                 <tr v-for="(clue,i) in clueList" :key="clue.id">
                     <td><input type="checkbox"/></td>
                     <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='detail.html';">{{clue.fullname}}</a></td>
+                           @click="displayClueDetail(clue.id)">{{clue.fullname+clue.appellation}}</a></td>
                     <td>{{clue.company}}</td>
                     <td>{{clue.phone}}</td>
                     <td>{{clue.mphone}}</td>
@@ -605,6 +605,11 @@
         },
 
         methods: {
+            //显示线索的详细信息
+            displayClueDetail:function (id){
+                window.location.href="/CRM/workbench/clue/queryClueDetailById/" + id;
+            },
+
             queryClick:function () {
                 clueMainPage.queryClueByCondition(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
             },

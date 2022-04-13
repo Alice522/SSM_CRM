@@ -67,4 +67,9 @@ public interface ClueMapper {
     * 返回根据条件查询线索的总数
     * */
     Integer selectCluesByConditionGetTotal(Map<String,Object> map);
+
+    /*
+    * 根据Id查询线索
+    * */
+    Clue selectClueById(String id);
 }

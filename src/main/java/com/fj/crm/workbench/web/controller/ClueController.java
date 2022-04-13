@@ -72,4 +72,5 @@ public class ClueController {
         returnMap.put("clueListTotal",clueService.queryCluesByConditionGetTotal(map));
         return returnMap;
     }
+
 }
