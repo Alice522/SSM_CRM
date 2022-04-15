@@ -451,7 +451,7 @@
         watch: {
             //监听checks列表
             checks() {
-                if (this.checks.length == this.activitiesList.length) {
+                if (this.checks.length == this.activitiesList.length && this.activitiesList.length != 0) {
                     //将全选框选中
                     this.checkAll = true;
                 } else {

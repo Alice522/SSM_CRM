@@ -205,4 +205,13 @@
     ON tcar.activity_id = ta.id
     WHERE tc.id = #{id}
   </select>
+
+  <!--根据线索Id查询关联的市场活动的Id-->
+  <select id="selectActivitiesIdByClueId" resultType="string">
+    SELECT tcar.activity_id
+    FROM tbl_clue tc
+    JOIN tbl_clue_activity_relation tcar
+    ON tc.id = tcar.clue_id
+    WHERE tc.id = #{id}
+  </select>
 </mapper>

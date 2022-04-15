@@ -10,4 +10,8 @@ public interface ClueRemarkService {
     List<ClueRemark> queryClueRemarksByClueId(String id);
 
     List<MarketingActivities> queryActivitiesByClueId(String id);
+
+    List<String> queryActivitiesIdByClueId(String id);
+
+    int deleteClueActivity(String clueId,String activityId);
 }

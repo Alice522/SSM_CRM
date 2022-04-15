@@ -23,4 +23,6 @@ public interface ActivityService {
     HSSFWorkbook writeActivitiesToExcel();
 
     Integer importFileToDatabase(List<MarketingActivities> activities);
+
+    List<MarketingActivities> queryActivitiesByNameLike(String name);
 }

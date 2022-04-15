@@ -116,4 +116,9 @@ public class ActivityServiceImpl implements ActivityService {
     public Integer importFileToDatabase(List<MarketingActivities> activities) {
         return activitiesMapper.insertBatchActivities(activities);
     }
+
+    @Override
+    public List<MarketingActivities> queryActivitiesByNameLike(String name) {
+        return activitiesMapper.selectActivitiesByNameLike(name);
+    }
 }

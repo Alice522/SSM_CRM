@@ -63,4 +63,9 @@ public interface ClueRemarkMapper {
     * 根据线索Id查询关联的市场活动
     * */
     List<MarketingActivities> selectActivitiesByClueId(String id);
+
+    /*
+    * 根据线索Id查询关联的市场活动的id
+    * */
+    List<String> selectActivitiesIdByClueId(String id);
 }

@@ -57,10 +57,9 @@
         // vue中使用
         // 只需要将下方注释的触发事件处的事件改为你想使用enter触发事件的函数名即可
         created() {
-            var _this = this;
-            document.onkeydown = function (e) {
-                var key = e.keyCode;
-                if (key === 13) {
+            let _this = this;
+            document.onkeyup = function (e) {
+                if (e.key === 'Enter') {
                     _this.submitForm() // 触发事件
                 }
             };

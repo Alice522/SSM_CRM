@@ -299,4 +299,15 @@
             #{activity.endDate},#{activity.cost},#{activity.description},#{activity.createTime},#{activity.createBy})
         </foreach>
     </insert>
+
+    <!--根据市场活动名称模糊查询市场活动-->
+    <select id="selectActivitiesByNameLike" resultMap="BaseResultMap">
+        SELECT ta.id,ta.owner,ta.name,ta.start_date,ta.end_date,ta.cost,ta.description,
+               tu.name as create_by,tu2.name as edit_by,ta.edit_time
+        FROM tbl_activity ta
+        JOIN tbl_user tu ON ta.create_by = tu.id
+        LEFT JOIN tbl_user tu2 ON ta.edit_by = tu2.id
+        WHERE ta.name LIKE '%' #{name} '%'
+        ORDER BY ta.create_time DESC
+    </select>
 </mapper>

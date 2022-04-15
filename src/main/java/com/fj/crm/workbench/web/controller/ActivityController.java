@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -92,6 +93,7 @@ public class ActivityController {
         PageHelper.startPage((int) map.get("pageNo"), (int) map.get("pageSize"));
         //查询市场活动和总条数
         returnMap.put("activitiesList", activityService.queryActivitiesByConditionForPage(map));
+        System.out.println(activityService.queryActivitiesByConditionForPage(map).size());
         returnMap.put("activitiesTotal", activityService.queryTotalActivitiesByConditionForPage(map));
         return returnMap;
     }
@@ -233,4 +235,6 @@ public class ActivityController {
         }
         return returnObject;
     }
+
+
 }

@@ -90,4 +90,9 @@ public interface MarketingActivitiesMapper {
     * */
     Integer insertBatchActivities(List<MarketingActivities> activities);
 
+    /*
+    * 根据市场活动名称模糊查询市场活动
+    * */
+    List<MarketingActivities> selectActivitiesByNameLike(String name);
+
 }

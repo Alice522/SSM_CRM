@@ -67,10 +67,12 @@
             </div>
             <div class="modal-body">
                 <div class="btn-group" style="position: relative; top: 18%; left: 8px;">
-                    <form class="form-inline" role="form">
+                    <form class="form-inline" role="form" onkeydown="if(event.keyCode==13){return false}">
+                        <input type="hidden" th:value="${queryClue.id}" ref="getClueId">
                         <div class="form-group has-feedback">
                             <input type="text" class="form-control" style="width: 300px;"
-                                   placeholder="请输入市场活动名称，支持模糊查询">
+                                   placeholder="请输入市场活动名称，支持模糊查询"
+                                    v-model="name">
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
                     </form>
@@ -78,7 +80,7 @@
                 <table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
                     <thead>
                     <tr style="color: #B3B3B3;">
-                        <td><input type="checkbox"/></td>
+                        <td><input type="checkbox" v-model="checkAll" @click="checkAllActivity"/></td>
                         <td>名称</td>
                         <td>开始日期</td>
                         <td>结束日期</td>
@@ -87,26 +89,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>发传单</td>
-                        <td>2020-10-10</td>
-                        <td>2020-10-20</td>
-                        <td>zhangsan</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"/></td>
-                        <td>发传单</td>
-                        <td>2020-10-10</td>
-                        <td>2020-10-20</td>
-                        <td>zhangsan</td>
+                    <tr v-for="activity in activityList" :key="activity.id">
+                        <td><input type="checkbox" v-model="checks" :value="activity.id"/></td>
+                        <td>{{activity.name}}</td>
+                        <td>{{activity.startDate}}</td>
+                        <td>{{activity.endDate}}</td>
+                        <td>{{activity.owner}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ref="closeModel">取消</button>
+                <button type="button" class="btn btn-primary" @click="relateClueActivity">关联</button>
             </div>
         </div>
     </div>
@@ -269,7 +264,7 @@
 </div>
 
 <!-- 市场活动 -->
-<div>
+<div id="activities-page">
     <div style="position: relative; top: 60px; left: 40px;">
         <div class="page-header">
             <h4>市场活动</h4>
@@ -291,7 +286,7 @@
                     <td th:text="${activity.startDate}"></td>
                     <td th:text="${activity.endDate}"></td>
                     <td th:text="${activity.owner}"></td>
-                    <td><a href="javascript:void(0);" style="text-decoration: none;"><span
+                    <td><a href="javaScript:void(0);" th:@click="|deleteClueActivity('${queryClue.id}','${activity.id}')|" style="text-decoration: none;"><span
                             class="glyphicon glyphicon-remove"></span>解除关联</a></td>
                 </tr>
                 </tbody>
@@ -299,7 +294,7 @@
         </div>
 
         <div>
-            <a href="javascript:void(0);" data-toggle="modal" data-target="#bundModal"
+            <a href="javaScript:void(0);" @click="queryActivitiesByNameLike('')" data-toggle="modal" data-target="#bundModal"
                style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
         </div>
     </div>
@@ -307,5 +302,102 @@
 
 
 <div style="height: 200px;"></div>
+<script type="text/javascript">
+    let bundModal = new Vue({
+        el:"#bundModal",
+        data(){
+            return{
+                activityList:[],
+                name:"",
+                checks:[],
+                checkAll:false
+            }
+        },
+        beforeMount(){
+            let _this = this;
+            document.onkeyup = function (e) {
+                if(e.key === 'Enter'){
+                    activitiesPage.queryActivitiesByNameLike(_this.name);
+                }
+            }
+        },
+        watch:{
+            checks(){
+                if(this.checks.length == this.activityList.length && this.activityList.length != 0){
+                    this.checkAll = true;
+                }else {
+                    this.checkAll = false;
+                }
+            }
+        },
+        methods: {
+            relateClueActivity:function (){
+                if(this.checks.length == 0){
+                    alert("至少关联一个市场活动！")
+                    return;
+                }
+                let clueId = this.$refs.getClueId.value;
+                axios({
+                    url: "/CRM/workbench/clue/createClueAndActivityRel.do",
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json;charset=UTF-8"
+                    },
+                    dataType: 'json',
+                    data: {
+                        clueId: clueId,
+                        activities: this.checks
+                    }
+                }).then((res) => {
+                    if(res.data.code == '1'){
+                        this.$refs.closeModel.click();
+                        window.location.href = "/CRM/workbench/clue/queryClueDetailById/" + clueId;
+                    }else {
+                        alert(res.data.message);
+                    }
+                })
+            },
+
+            checkAllActivity:function () {
+                if(this.checkAll){
+                    this.checks = [];
+                }else{
+                    this.activityList.forEach((activity) => {
+                        if(this.checks.indexOf(activity.id) == -1){
+                            this.checks.push(activity.id);
+                        }
+                    })
+                }
+            }
+        }
+    });
+
+    let activitiesPage = new Vue({
+        el:"#activities-page",
+        methods:{
+            deleteClueActivity:function (clueId,activityId){
+                axios({
+                    method: "get",
+                    url: "/CRM/workbench/clue/deleteClueActivity/" + clueId + "/" + activityId
+                }).then((res) => {
+                    if(res.data.code == '1'){
+                        window.location.href = "/CRM/workbench/clue/queryClueDetailById/" + clueId;
+                    }else {
+                        alert(res.data.message);
+                    }
+                })
+            },
+
+            queryActivitiesByNameLike:function (name) {
+                axios({
+                    method: "get",
+                    url: "/CRM/workbench/clue/queryActivitiesByNameLike/" + name
+                }).then((res) => {
+                    bundModal.activityList = res.data;
+                })
+            }
+        }
+    })
+</script>
 </body>
 </html>
