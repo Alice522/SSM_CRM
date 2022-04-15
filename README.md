@@ -70,7 +70,7 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
     1. 文件上传用到MultipartFile类，需要引入相关插件并在MVC配置文件中配置multipartResolver解析器bean
 
-    2. 将thymeleaf中的变量传入vue方法，语法为：th:@click="|getName(${person.name})|"
+    2. 将thymeleaf中的变量传入vue方法，语法为：th:@click="|getName('${person.name}')|"
     
 
 ### 2022/4/11 - 线索主页面，创建线索:
@@ -78,6 +78,11 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 ### 2022/4/12 - 分页条件查询线索:
 
 ### 2022/4/13 - 线索详情页，线索备注，关联市场活动显示:
+
+### 2022/4/15 - 添加线索市场活动关联，删除关联:
+
+    1. @PathVariable中的参数不能为null或者'',可以使用映射多个地址的方式解决参数为空的情况
+    
 
 ## 4️⃣遗留的问题
 
