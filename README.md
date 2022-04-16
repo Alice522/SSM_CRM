@@ -38,7 +38,7 @@ Spring+SpringMVC+MyBatis+Thymeleaf+Vue+JS+Jquery+Axios+Json
 
     3. 由于使用thymeleaf暂时没找到操作cookie的方法，故此导入vue-cookie包，使用vue操作cookie
     
-    4. 在vue中，不能用$cookies.get('loginAct') && $cookies.get('loginPwd')为checked赋值，此时值为$cookies.get('loginPwd')。应该用!!($cookies.get('loginAct') && $cookies.get('loginPwd'))，此时值为一个布尔类型。
+    4. 在vue中，不能用$cookies.get('loginAct') && $cookies.get('loginPwd')为checked赋值，此时值为$cookies.get('loginPwd')。应该用!!($cookies.get('loginAct') && $cookies.get('loginPwd'))，此时值为一个布尔类型
 
 ### 2022/4/4 - 工作台主页显示，市场活动主页面显示，创建市场活动:
 
